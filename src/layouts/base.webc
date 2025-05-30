@@ -1,0 +1,115 @@
+---
+layout: root.webc
+---
+
+<header>
+  <section class="flow__flex flow__align--block-center flow__align--inline-between flow__gap--m">
+    <button class="button__tertiary" onclick="toggleDialog()">
+      <image-get-svg src="icons/ui/calendar.svg" webc:nokeep></image-get-svg>
+    </button>
+    <p>
+      <strong
+        @text="`${new Date().toLocaleDateString('en-US', { month: 'long' })}, ${new Date().getFullYear()}`"></strong>
+    </p>
+    <button class="button__tertiary" onclick="toggleTheme()">
+      <image-get-svg src="icons/ui/moon.svg" webc:nokeep></image-get-svg>
+      <image-get-svg src="icons/ui/sun.svg" webc:nokeep></image-get-svg>
+    </button>
+  </section>
+</header>
+<main :class="pageClass || page.fileSlug">
+  <span class="flow__inline padding__s">
+    <button class="button__tertiary" onclick="prevDay()" tabindex="-1">
+      <image-get-svg src="icons/ui/arrow-left.svg" webc:nokeep></image-get-svg>
+    </button>
+  </span>
+  <article>
+    <template @html="content" webc:nokeep></template>
+  </article>
+  <span class="flow__inline padding__s">
+    <button class="button__tertiary" onclick="nextDay()" tabindex="-1">
+      <image-get-svg src="icons/ui/arrow-right.svg" webc:nokeep></image-get-svg>
+    </button>
+  </span>
+</main>
+<script>
+  const getTheme = (fn) => {
+    if (!window.matchMedia) {
+      return;
+    }
+
+    const query = window.matchMedia('(prefers-color-scheme: dark)');
+
+    fn(query.matches);
+
+    query.addEventListener('change', (event) => fn(event.matches));
+  }
+
+  function toggleTheme() {
+    if (sessionStorage.getItem("theme") === null) {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        sessionStorage.setItem("theme", "dark");
+      } else {
+        sessionStorage.setItem("theme", "light");
+      }
+      document.documentElement.setAttribute(
+        "data-theme",
+        sessionStorage.getItem("theme")
+      );
+    }
+    if (document.documentElement.getAttribute("data-theme") === "dark") {
+      sessionStorage.setItem("theme", "light");
+    } else {
+      sessionStorage.setItem("theme", "dark");
+    }
+    document.documentElement.setAttribute(
+      "data-theme",
+      sessionStorage.getItem("theme")
+    );
+  }
+
+  function toggleDialog() {
+    const dialogIsOpen = calendar.hasAttribute("open");
+
+    if (dialogIsOpen) {
+      calendar.close();
+      document.body.removeAttribute("style");
+    } else {
+      calendar.showModal();
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function getCheckedIndex() {
+    const allInputs = [...document.querySelectorAll('input')];
+    const checked = document.querySelector('input:checked');
+    const index = Number(checked.getAttribute('id'));
+
+    // Removing whichever input is checked by default
+    checked.removeAttribute('checked');
+
+    return {
+      allInputs,
+      index
+    };
+  }
+
+  function nextDay() {
+    const { allInputs, index } = getCheckedIndex();
+    const itemToCheck = index === 31 ? allInputs.shift() : allInputs[index];
+    itemToCheck.setAttribute('checked', true);
+  }
+
+  function prevDay() {
+    const { allInputs, index } = getCheckedIndex();
+    const itemToCheck = index === 1 ? allInputs.pop() : allInputs[index - 2];
+    itemToCheck.setAttribute('checked', true);
+  }
+
+  getTheme((isDark) => {
+    document.documentElement.setAttribute(
+      "data-theme",
+      sessionStorage.getItem("theme") ? sessionStorage.getItem("theme") : (isDark ? 'dark' : 'light')
+    )
+  })
+</script>

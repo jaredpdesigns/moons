@@ -1,0 +1,32 @@
+{
+  "name": "moons",
+  "version": "1.0.0",
+  "description": "Hawaiian Moon Phases",
+  "author": "Jared Pendergraft <jaredpdesigns@gmail.com>",
+  "license": "ISC",
+  "scripts": {
+    "buildNewMoons": "node --experimental-modules _builders/buildNewMoonData.js",
+    "buildYear": "node --experimental-modules _builders/buildYear.js",
+    "build": "eleventy",
+    "clean": "rm -rf _site",
+    "dev": "yarn clean && eleventy --serve"
+  },
+  "type": "module",
+  "dependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-img": "^4.0.2",
+    "@11ty/eleventy-plugin-webc": "^0.11.2",
+    "autoprefixer": "^10.4.20",
+    "debug": "^4.3.6",
+    "fs-extra": "^11.2.0",
+    "html-minifier": "^4.0.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.0.1",
+    "postcss": "^8.4.41",
+    "postcss-each": "^1.1.0",
+    "postcss-import": "^16.1.0",
+    "postcss-minify": "^1.1.0",
+    "postcss-nested": "^6.2.0"
+  },
+  "packageManager": "yarn@4.5.0"
+}

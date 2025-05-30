@@ -1,0 +1,11 @@
+<script webc:type="render" webc:is="template">
+  const Image = require("@11ty/eleventy-img");
+  module.exports = async function () {
+    let options = await Image(this.src, {
+      formats: ['svg'],
+      dryRun: true,
+    });
+
+    return options.svg[0].buffer.toString();
+  }
+</script>
