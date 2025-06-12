@@ -69,14 +69,52 @@ layout: root.webc
   }
 
   function toggleDialog() {
+    const calendar = document.getElementById('calendar');
     const dialogIsOpen = calendar.hasAttribute("open");
 
     if (dialogIsOpen) {
-      calendar.close();
-      document.body.removeAttribute("style");
+      closeDialog();
     } else {
-      calendar.showModal();
-      document.body.style.overflow = "hidden";
+      openDialog();
+    }
+  }
+
+  function openDialog() {
+    const calendar = document.getElementById('calendar');
+    calendar.showModal();
+    document.body.style.overflow = "hidden";
+
+    /* Add event listeners for enhanced dialog functionality */
+    document.addEventListener('keydown', handleDialogKeydown);
+    calendar.addEventListener('click', handleDialogBackdropClick);
+  }
+
+  function closeDialog() {
+    const calendar = document.getElementById('calendar');
+    calendar.close();
+    document.body.removeAttribute("style");
+
+    /* Remove event listeners when dialog closes */
+    document.removeEventListener('keydown', handleDialogKeydown);
+    calendar.removeEventListener('click', handleDialogBackdropClick);
+  }
+
+  function handleDialogKeydown(event) {
+    /* Close dialog on Escape key */
+    if (event.key === 'Escape') {
+      closeDialog();
+    }
+  }
+
+  function handleDialogBackdropClick(event) {
+    const calendar = document.getElementById('calendar');
+
+    /*
+     * When clicking the backdrop, the event target is the dialog element itself
+     * When clicking inside, the target is a child element
+     */
+    if (event.target === calendar) {
+      closeDialog();
     }
   }
 
@@ -96,13 +134,21 @@ layout: root.webc
 
   function nextDay() {
     const { allInputs, index } = getCheckedIndex();
-    const itemToCheck = index === 31 ? allInputs.shift() : allInputs[index];
+    /*
+     * If we're at the last day of the month, go to first day
+     * Otherwise, go to the next day
+     */
+    const itemToCheck = index === allInputs.length ? allInputs[0] : allInputs[index];
     itemToCheck.setAttribute('checked', true);
   }
 
   function prevDay() {
     const { allInputs, index } = getCheckedIndex();
-    const itemToCheck = index === 1 ? allInputs.pop() : allInputs[index - 2];
+    /*
+     * If we're at the first day of the month, go to last day
+     * Otherwise, go to the previous day
+     */
+    const itemToCheck = index === 1 ? allInputs[allInputs.length - 1] : allInputs[index - 2];
     itemToCheck.setAttribute('checked', true);
   }
 
