@@ -18,7 +18,7 @@ layout: root.webc
   </section>
 </header>
 <main :class="pageClass || page.fileSlug">
-  <span class="flow__inline padding__s">
+  <span class="color__bg--contrast flow__inline padding__s radius__xxxl">
     <button class="button__tertiary" onclick="prevDay()" tabindex="-1">
       <image-get-svg src="icons/ui/arrow-left.svg" webc:nokeep></image-get-svg>
     </button>
@@ -26,7 +26,7 @@ layout: root.webc
   <article>
     <template @html="content" webc:nokeep></template>
   </article>
-  <span class="flow__inline padding__s">
+  <span class="color__bg--contrast flow__inline padding__s radius__xxxl">
     <button class="button__tertiary" onclick="nextDay()" tabindex="-1">
       <image-get-svg src="icons/ui/arrow-right.svg" webc:nokeep></image-get-svg>
     </button>
@@ -151,6 +151,98 @@ layout: root.webc
     const itemToCheck = index === 1 ? allInputs[allInputs.length - 1] : allInputs[index - 2];
     itemToCheck.setAttribute('checked', true);
   }
+
+  function selectDay(day) {
+    /*
+     * Select a specific day by day number
+     * Remove checked attribute from current selection
+     * Add checked attribute to the selected day
+     * Close the calendar dialog
+     */
+    const currentChecked = document.querySelector('input:checked');
+    if (currentChecked) {
+      currentChecked.removeAttribute('checked');
+    }
+
+    const dayInput = document.getElementById(day.toString());
+    if (dayInput) {
+      dayInput.setAttribute('checked', true);
+      dayInput.checked = true;
+    }
+
+    closeDialog();
+  }
+
+  /*
+   * Keyboard navigation for arrow keys
+   */
+  document.addEventListener('keydown', (event) => {
+    const calendar = document.getElementById('calendar');
+    const dialogIsOpen = calendar && calendar.hasAttribute("open");
+
+    /*
+     * Only handle arrow keys when dialog is not open
+     */
+    if (dialogIsOpen) return;
+
+    switch (event.key) {
+      case 'ArrowLeft':
+        event.preventDefault();
+        prevDay();
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        nextDay();
+        break;
+    }
+  });
+
+  /*
+   * Swipe gesture handling for touch devices
+   */
+  let touchStart = { x: 0, y: 0 };
+  const minSwipeDistance = 50;
+
+  document.addEventListener('touchstart', (event) => {
+    const calendar = document.getElementById('calendar');
+    const dialogIsOpen = calendar && calendar.hasAttribute("open");
+
+    /*
+     * Only track swipes when dialog is not open and not touching the dialog
+     */
+    if (!dialogIsOpen && !event.target.closest('#calendar')) {
+      touchStart.x = event.changedTouches[0].screenX;
+      touchStart.y = event.changedTouches[0].screenY;
+    }
+  });
+
+  document.addEventListener('touchend', (event) => {
+    const calendar = document.getElementById('calendar');
+    const dialogIsOpen = calendar && calendar.hasAttribute("open");
+
+    /*
+     * Only handle swipes when dialog is not open and not touching the dialog
+     */
+    if (!dialogIsOpen && !event.target.closest('#calendar')) {
+      const touchEnd = {
+        x: event.changedTouches[0].screenX,
+        y: event.changedTouches[0].screenY
+      };
+
+      const deltaX = touchEnd.x - touchStart.x;
+      const deltaY = touchEnd.y - touchStart.y;
+
+      /*
+       * Check if horizontal swipe is more significant than vertical
+       */
+      if (
+        Math.abs(deltaX) > Math.abs(deltaY) &&
+        Math.abs(deltaX) > minSwipeDistance
+      ) {
+        deltaX > 0 ? prevDay() : nextDay();
+      }
+    }
+  });
 
   getTheme((isDark) => {
     document.documentElement.setAttribute(

@@ -2,7 +2,7 @@ import { newMoonData } from "./newMoonData.js";
 
 const moonGroups = [
   {
-    name: "Ho'onui",
+    name: "Hoʻonui",
     description: "The waxing moon phases. A time of growth and increase.",
     phaseDays: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   },
@@ -64,29 +64,29 @@ const moonPhases = [
   },
   {
     day: 7,
-    name: "'Ole Kū Kahi",
-    description: "First of the 'Ole phases",
+    name: "ʻOle Kū Kahi",
+    description: "First of the ʻOle phases",
     planting: "Not ideal for planting",
     fishing: "Poor for fishing"
   },
   {
     day: 8,
-    name: "'Ole Kū Lua",
+    name: "ʻOle Kū Lua",
     description: "The moon continues to grow",
     planting: "Avoid planting",
     fishing: "Fishing is poor"
   },
   {
     day: 9,
-    name: "'Ole Kū Kolu",
+    name: "ʻOle Kū Kolu",
     description: "More growth",
     planting: "Planting and fishing both unfavorable",
     fishing: "Bad for fishing"
   },
   {
     day: 10,
-    name: "'Ole Kū Pau",
-    description: "Final 'Ole phase",
+    name: "ʻOle Kū Pau",
+    description: "Final ʻOle phase",
     planting: "Avoid planting",
     fishing: "Poor fishing"
   },
@@ -141,21 +141,21 @@ const moonPhases = [
   },
   {
     day: 18,
-    name: "Lā'au Kū Kahi",
+    name: "Lāʻau Kū Kahi",
     description: "Moon slowly diminishes",
     planting: "Favorable for planting trees",
     fishing: "Fishing is good"
   },
   {
     day: 19,
-    name: "Lā'au Kū Lua",
+    name: "Lāʻau Kū Lua",
     description: "Further waning",
     planting: "Good for harvesting trees",
     fishing: "Fishing remains good"
   },
   {
     day: 20,
-    name: "Lā'au Pau",
+    name: "Lāʻau Pau",
     description: "End of Lāʻau phases",
     planting: "Best for harvesting fruit crops",
     fishing: "Fair fishing conditions"
@@ -163,7 +163,7 @@ const moonPhases = [
   {
     day: 21,
     name: "ʻOle Kū Kahi",
-    description: "Start of 'Ole phases",
+    description: "Start of ʻOle phases",
     planting: "Avoid planting",
     fishing: "Not good for fishing"
   },
@@ -177,7 +177,7 @@ const moonPhases = [
   {
     day: 23,
     name: "ʻOle Kū Pau",
-    description: "End of the 'Ole phases",
+    description: "End of the ʻOle phases",
     planting: "Avoid planting",
     fishing: "Poor fishing"
   },
@@ -258,7 +258,7 @@ const getMoonPhase = (dayRef) => {
 
   /*
    * Calculate absolute grid position within 32 total frames
-   * Ho'onui: grid positions 1-10 (with gap at 11)
+   * Hoʻonui: grid positions 1-10 (with gap at 11)
    * Poepoe: grid positions 12-17 (with gap at 18)
    * Emi: grid positions 19-32
    */
@@ -269,7 +269,7 @@ const getMoonPhase = (dayRef) => {
 
     if (dayIndex !== -1) {
       if (foundGroup === moonGroups[0]) {
-        /* Ho'onui group: positions 1-10 */
+        /* Hoʻonui group: positions 1-10 */
         gridPosition = dayIndex + 1;
       } else if (foundGroup === moonGroups[1]) {
         /* Poepoe group: positions 12-17 (skip gap at 11) */

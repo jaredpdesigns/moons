@@ -119,6 +119,10 @@
     margin: auto;
     outline: unset;
 
+    &::backdrop {
+      background: unset;
+    }
+
     >div {
       display: grid;
       gap: var(--size__xs);
@@ -159,6 +163,13 @@
       border-radius: var(--size__s);
       gap: var(--size__xs);
       padding: var(--size__xs);
+    }
+
+    button {
+      background: unset;
+      border: none;
+      border-radius: var(--size__xs);
+      color: inherit;
     }
 
     p {
@@ -230,6 +241,7 @@
       block-size: 100%;
       cursor: pointer;
       inline-size: 100%;
+      opacity: 0;
       position: relative;
       z-index: 2;
     }
@@ -248,7 +260,8 @@
 
       .date {
         grid-template-rows: auto 1fr;
-        min-inline-size: 0;
+        min-inline-size: 96px;
+        overflow: hidden;
 
         svg {
           block-size: var(--size__xxl);
@@ -273,8 +286,10 @@
     .note {
       svg {
         block-size: 2cap;
+        flex-shrink: 0;
         inline-size: auto;
         inset-block-start: 0.5cap;
+        min-inline-size: 0;
         position: relative;
       }
     }
