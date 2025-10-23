@@ -196,8 +196,8 @@
   }
 
   .day {
-    aspect-ratio: 2/3;
-    align-content: center;
+    align-content: start;
+    align-self: center;
     display: grid;
     grid-area: 1/1;
     min-inline-size: 0;
@@ -205,10 +205,6 @@
     rotate: none;
     scale: 0.9;
     transition: scale 0.375s var(--transition);
-
-    @media(min-width: 400px) {
-      aspect-ratio: 3/2;
-    }
 
     &:nth-of-type(2n) {
       rotate: 4deg;
@@ -256,11 +252,12 @@
     }
 
     header {
-      grid-template-columns: repeat(3, 1fr);
+      --date-size: 108px;
+      grid-template-columns: var(--date-size) 1fr;
 
       .date {
         grid-template-rows: auto 1fr;
-        min-inline-size: 96px;
+        inline-size: var(--date-size);
         overflow: hidden;
 
         svg {
@@ -276,10 +273,6 @@
           align-content: center;
           text-transform: uppercase;
         }
-      }
-
-      .description {
-        grid-column: span 2;
       }
     }
 

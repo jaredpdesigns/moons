@@ -3,27 +3,6 @@ pageClass: overview
 layout: base.webc
 ---
 
-<dialog id="calendar">
-  <div class="border__all color__border--base--light color__bg--contrast radius__m shadow">
-    <header class="flow__flex flow__align--block-center flow__align--inline-between">
-      <p><strong
-          @text="`${new Date().toLocaleDateString('en-US', { month: 'long' })}, ${new Date().getFullYear()}`"></strong>
-      </p>
-      <button class="button__tertiary" onclick="toggleDialog()"><image-get-svg src="icons/ui/cancel.svg"
-          webc:nokeep></image-get-svg></button>
-    </header>
-    <section>
-      <p webc:for="weekday of ['S', 'M', 'T', 'W', 'T', 'F', 'S']"><strong @text="weekday"></strong></p>
-      <button webc:for="(data,index) of moonData.monthCalendar"
-        :class="new Date().getDate() === data.day && new Date().getMonth() === data.date.getMonth() ? 'color__bg--base--light':'' || data.isOverlap ? ' overlap':''"
-        :onclick="!data.isOverlap ? `selectDay(${data.day})` : null" :disabled="data.isOverlap">
-        <p @text="data.day"></p>
-        <image-get-svg :src="`icons/moons/${data.phase.day}.svg`" webc:nokeep></image-get-svg>
-      </button>
-    </section>
-  </div>
-</dialog>
-
 <label :for="data.day" class="day border__all color__bg--contrast color__border--base--light radius__s"
   webc:for="(data,index) of moonData.monthBuilt">
   <input :id="data.day" type="radio" name="days" :value="data.day" :checked="new Date().getDate() === index + 1" />
