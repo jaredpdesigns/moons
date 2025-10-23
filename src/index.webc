@@ -6,7 +6,7 @@ layout: base.webc
 <label :for="data.day" class="day border__all color__bg--contrast color__border--base--light radius__s"
   webc:for="(data,index) of moonData.monthBuilt">
   <input :id="data.day" type="radio" name="days" :value="data.day" :checked="new Date().getDate() === index + 1" />
-  <section class="flow__grid flow__gap--l padding__l">
+  <section class="flow__grid flow__gap--l padding__xl">
     <header class="flow__grid flow__align--block-center flow__gap--m">
       <div class="date border__all color__border--base--light flow__grid radius__s type__align--center">
         <section class="border__bottom color__bg--base--ghost color__border--base--light padding__inline--s">
@@ -14,44 +14,24 @@ layout: base.webc
               @text="data.date.toLocaleDateString('en-US', { weekday: 'short' })"></strong></p>
         </section>
         <section class="flow__grid flow__align--block-center flow__align--inline-center padding__s">
-          <p class="type__size--l-m--fluid"><strong @text="data.day"></strong></p>
+          <p class="type__size--m-s--fluid"><strong @text="data.day"></strong></p>
           <image-get-svg :src="`icons/moons/${data.phase.day}.svg`" webc:nokeep></image-get-svg>
         </section>
       </div>
       <div class="description">
-        <p><strong @text="data.phase.name"></strong></p>
-        <p class="color__type--base--mishid type__size--s-m--fluid" @text="data.phase.description"></p>
+        <p class="type__size--l-xxl--fluid"><strong @text="data.phase.name"></strong></p>
+        <p class="color__type--base--mishid type__size--m-s--fluid" @text="data.phase.description"></p>
       </div>
     </header>
     <section class="flow__grid flow__gap--s">
       <div class="note flow__flex flow__align--block-start flow__gap--m">
         <image-get-svg src="icons/ui/plant.svg" webc:nokeep></image-get-svg>
-        <p @text="data.phase.planting"></p>
+        <p @text="data.phase.planting" class="type__size--m-s--fluid"></p>
       </div>
       <div class="note flow__flex flow__align--block-start flow__gap--m">
         <image-get-svg src="icons/ui/fish.svg" webc:nokeep></image-get-svg>
-        <p @text="data.phase.fishing"></p>
+        <p @text="data.phase.fishing" class="type__size--m-s--fluid"></p>
       </div>
     </section>
-    <hr />
-    <footer class="flow__grid margin__block-start--s">
-      <section class="flow__grid">
-        <p
-          :class="`${data.phase.group.name === moonData.moonGroups[0].name ? 'selected ':''}color__bg--base--ghost color__type--base--mid flow__grid position__relative type__size--xs-xs radius__s`">
-          <span class="label position__absolute" @text="moonData.moonGroups[0].name"></span>
-        </p>
-        <p
-          :class="`${data.phase.group.name === moonData.moonGroups[1].name ? 'selected ':''}color__bg--base--ghost color__type--base--mid flow__grid position__relative type__size--xs-xs radius__s`">
-          <span class="label position__absolute" @text="moonData.moonGroups[1].name"></span>
-        </p>
-        <p
-          :class="`${data.phase.group.name === moonData.moonGroups[2].name ? 'selected ':''}color__bg--base--ghost color__type--base--mid flow__grid position__relative type__size--xs-xs radius__s`">
-          <span class="label position__absolute" @text="moonData.moonGroups[2].name"></span>
-        </p>
-      </section>
-      <section class="flow__grid position__relative">
-        <span class="indicator position__absolute" :style="`--gridPosition: ${data.phase.gridPosition}`"></span>
-      </section>
-    </footer>
   </section>
 </label>

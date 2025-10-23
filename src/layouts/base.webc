@@ -32,8 +32,19 @@ layout: root.webc
     </button>
   </span>
 </main>
+<footer class="flow__grid">
+  <section class="flow__grid flow__gap--xs" webc:for="(group, index) of moonData.moonGroups">
+    <p class="type__size--xs-xs" @text="group.name"></p>
+    <div class="flow__flex flow__gap--xs" @html="(() => {
+        const isLastGroup = index === moonData.moonGroups.length - 1;
+        const totaldays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+        const days = isLastGroup && totaldays === 31 ? [...group.phaseDays, 31] : group.phaseDays;
+        return days.map(day => `<span data-phase-day='${day}' class='phase-day radius__xs ${Number(day) <= Number(new Date().getDate()) ? 'color__bg--base--mid' : 'color__bg--base--light'}'></span>`).join('');
+      })()"></div>
+  </section>
+</footer>
 <dialog id="calendar">
-  <div class="border__all color__border--base--light color__bg--contrast radius__m shadow">
+  <div class="border__all color__border--base--light color__bg--contrast margin__block--l radius__m shadow">
     <header class="flow__flex flow__align--block-center flow__align--inline-between">
       <p><strong
           @text="`${new Date().toLocaleDateString('en-US', { month: 'long' })}, ${new Date().getFullYear()}`"></strong>
@@ -42,11 +53,12 @@ layout: root.webc
           webc:nokeep></image-get-svg></button>
     </header>
     <section>
-      <p webc:for="weekday of ['S', 'M', 'T', 'W', 'T', 'F', 'S']"><strong @text="weekday"></strong></p>
+      <p webc:for="weekday of ['S', 'M', 'T', 'W', 'T', 'F', 'S']" class="type__size--xs-xs--fluid"><strong
+          @text="weekday"></strong></p>
       <button webc:for="(data,index) of moonData.monthCalendar"
-        :class="new Date().getDate() === data.day && new Date().getMonth() === data.date.getMonth() ? 'color__bg--base--light':'' || data.isOverlap ? ' overlap':''"
+        :class="`${new Date().getDate() === data.day ? 'color__bg--base--light' : 'color__bg--contrast'}${data.isOverlap ? ' overlap' : ''} flow__grid flow__align--block-center flow__align--inline-center padding__block--xs radius__xs`"
         :onclick="!data.isOverlap ? `selectDay(${data.day})` : null" :disabled="data.isOverlap">
-        <p @text="data.day"></p>
+        <p @text="data.day" class="type__size--xs-xs--fluid"></p>
         <image-get-svg :src="`icons/moons/${data.phase.day}.svg`" webc:nokeep></image-get-svg>
       </button>
     </section>
@@ -152,6 +164,28 @@ layout: root.webc
     };
   }
 
+  /*
+   * Update phases component to reflect the currently selected day
+   */
+  function updatePhases() {
+    const checked = document.querySelector('input:checked');
+    if (!checked) return;
+
+    const currentDay = Number(checked.getAttribute('id'));
+    const phaseSpans = document.querySelectorAll('.phase-day');
+
+    phaseSpans.forEach(span => {
+      const phaseDay = Number(span.getAttribute('data-phase-day'));
+      if (phaseDay <= currentDay) {
+        span.classList.add('color__bg--base--mid');
+        span.classList.remove('color__bg--base--light');
+      } else {
+        span.classList.remove('color__bg--base--mid');
+        span.classList.add('color__bg--base--light');
+      }
+    });
+  }
+
   function nextDay() {
     const { allInputs, index } = getCheckedIndex();
     /*
@@ -160,6 +194,7 @@ layout: root.webc
      */
     const itemToCheck = index === allInputs.length ? allInputs[0] : allInputs[index];
     itemToCheck.setAttribute('checked', true);
+    updatePhases();
   }
 
   function prevDay() {
@@ -170,6 +205,7 @@ layout: root.webc
      */
     const itemToCheck = index === 1 ? allInputs[allInputs.length - 1] : allInputs[index - 2];
     itemToCheck.setAttribute('checked', true);
+    updatePhases();
   }
 
   function selectDay(day) {
@@ -191,6 +227,7 @@ layout: root.webc
     }
 
     closeDialog();
+    updatePhases();
   }
 
   /*
