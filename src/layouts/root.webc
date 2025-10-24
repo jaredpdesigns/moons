@@ -2,22 +2,22 @@
 <html lang="en">
 
 <head>
-  <title @html="title"></title>
+  <title @html="site.name"></title>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <meta name="author" :content="site.author" />
   <meta name="color-scheme" content="light dark" />
-  <meta name="description" :content="description ?? site.description" />
+  <meta name="description" :content="site.description" />
   <meta name="keywords" :content="site.keywords" />
   <meta name="theme-color" :content="site.colorHEX" />
   <meta name="twitter:card" content="photo" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta property="og:description" :content="description ?? site.description" />
+  <meta property="og:description" :content="site.description" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:width" content="1200" />
-  <meta property="og:image" :content="social ? social : `${site.url}/img/social.jpg`" />
+  <meta property="og:image" :content="`${site.url}/img/social.jpg`" />
   <meta property="og:site_name" :content="site.name" />
-  <meta property="og:title" :content="title ?? site.name" />
+  <meta property="og:title" :content="site.name" />
   <meta property="og:type" content="website" />
   <meta property="og:url" :content="`${site.url}${page.url}`" />
   <link rel="canonical" :href="`${site.url}${page.url}`" />
