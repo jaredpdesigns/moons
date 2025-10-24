@@ -34,7 +34,7 @@ layout: root.webc
 </main>
 <footer class="flow__grid">
   <section class="flow__grid flow__gap--xs" webc:for="(group, index) of moonData.moonGroups">
-    <p class="type__size--xs-xs" @text="group.name"></p>
+    <p class="type__size--xs-xs"><strong @text="group.name"></strong></p>
     <div class="flow__flex flow__gap--xs" @html="(() => {
         const isLastGroup = index === moonData.moonGroups.length - 1;
         const totaldays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
@@ -49,8 +49,9 @@ layout: root.webc
       <p><strong
           @text="`${new Date().toLocaleDateString('en-US', { month: 'long' })}, ${new Date().getFullYear()}`"></strong>
       </p>
-      <button class="button__tertiary" onclick="toggleDialog()"><image-get-svg src="icons/ui/cancel.svg"
-          webc:nokeep></image-get-svg></button>
+      <button class="button__tertiary" onclick="toggleDialog()">
+        <image-get-svg src="icons/ui/cancel.svg" webc:nokeep></image-get-svg>
+      </button>
     </header>
     <section>
       <p webc:for="weekday of ['S', 'M', 'T', 'W', 'T', 'F', 'S']" class="type__size--xs-xs--fluid"><strong
